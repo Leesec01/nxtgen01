@@ -34,11 +34,21 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
   ];
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    toast({
-      title: "Signed out successfully",
-    });
-    navigate("/auth");
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Signed out successfully",
+      });
+      navigate("/auth");
+    } catch (error: any) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
