@@ -35,19 +35,26 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      toast({
-        title: "Signed out successfully",
-      });
-      navigate("/auth");
+      const { error } = await supabase.auth.signOut({ scope: "global" });
+
+      if (error) {
+        const msg = String((error as any)?.message || "").toLowerCase();
+        const status = (error as any)?.status;
+        if (status === 403 || msg.includes("session")) {
+          // Session missing on server — clear locally and proceed
+          await supabase.auth.signOut({ scope: "local" });
+        } else {
+          throw error;
+        }
+      }
+
+      toast({ title: "Signed out successfully" });
+      navigate("/auth", { replace: true });
     } catch (error: any) {
-      toast({
-        title: "Error signing out",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Last resort: ensure local tokens are cleared and redirect
+      try { await supabase.auth.signOut({ scope: "local" }); } catch {}
+      navigate("/auth", { replace: true });
+      toast({ title: "Signed out", description: "Your local session has been cleared." });
     }
   };
 
