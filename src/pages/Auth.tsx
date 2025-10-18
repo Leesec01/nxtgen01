@@ -116,7 +116,7 @@ const Auth = () => {
               <GraduationCap className="w-10 h-10 text-primary" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold gradient-text">EduHub LMS</h1>
+          <h1 className="text-3xl font-bold gradient-text">Nxtgen LMS</h1>
           <p className="text-muted-foreground">Your learning management platform</p>
         </div>
 

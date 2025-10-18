@@ -66,7 +66,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold gradient-text">EduHub LMS</h1>
+          <h1 className="text-2xl font-bold gradient-text">Nxtgen LMS</h1>
           <Button variant="outline" onClick={handleSignOut}>
             Sign Out
           </Button>

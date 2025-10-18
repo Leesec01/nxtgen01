@@ -29,7 +29,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <GraduationCap className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold gradient-text">EduHub LMS</h1>
+            <h1 className="text-2xl font-bold gradient-text">Nxtgen LMS</h1>
           </div>
           <Button onClick={() => navigate("/auth")}>Get Started</Button>
         </div>
@@ -75,7 +75,7 @@ const Index = () => {
           <div className="card-gradient p-12 rounded-2xl max-w-4xl mx-auto">
             <h3 className="text-3xl font-bold mb-4">Ready to get started?</h3>
             <p className="text-muted-foreground mb-8">
-              Join thousands of learners and educators already using EduHub
+              Join thousands of learners and educators already using Nxtgen LMS
             </p>
             <Button size="lg" onClick={() => navigate("/auth")}>
               Create Your Account
@@ -86,7 +86,7 @@ const Index = () => {
 
       <footer className="border-t border-border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50 mt-20">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>© 2025 EduHub LMS. Built with modern web technologies.</p>
+          <p>© 2025 Nxtgen LMS. Built with modern web technologies.</p>
         </div>
       </footer>
     </div>

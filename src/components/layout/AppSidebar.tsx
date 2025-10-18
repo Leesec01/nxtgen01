@@ -67,7 +67,7 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
     <Sidebar className={collapsed ? "w-14" : "w-60"} collapsible="icon">
       <div className="p-4 border-b border-border">
         {!collapsed && (
-          <h2 className="text-lg font-bold gradient-text">EduHub LMS</h2>
+          <h2 className="text-lg font-bold gradient-text">Nxtgen LMS</h2>
         )}
       </div>
 
