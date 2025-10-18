@@ -1,4 +1,4 @@
-import { Home, BookOpen, FileText, BarChart3, User, LogOut, Bell } from "lucide-react";
+import { Home, BookOpen, FileText, BarChart3, User, LogOut, Bot, Calendar } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -30,6 +30,8 @@ export function AppSidebar({ userRole }: AppSidebarProps) {
     { title: "Courses", url: "/courses", icon: BookOpen },
     { title: "Assignments", url: "/assignments", icon: FileText },
     { title: userRole === "student" ? "Grades" : "Performance", url: "/grades", icon: BarChart3 },
+    { title: "AI Assistant", url: "/ai-chat", icon: Bot },
+    { title: "Attendance", url: "/attendance", icon: Calendar },
     { title: "Profile", url: "/profile", icon: User },
   ];
 

@@ -52,6 +52,47 @@ export type Database = {
           },
         ]
       }
+      attendance: {
+        Row: {
+          course_id: string
+          created_at: string
+          date: string
+          id: string
+          notes: string | null
+          status: Database["public"]["Enums"]["attendance_status"]
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          date?: string
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["attendance_status"]
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          date?: string
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["attendance_status"]
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           created_at: string
@@ -213,6 +254,7 @@ export type Database = {
     }
     Enums: {
       app_role: "student" | "teacher"
+      attendance_status: "present" | "absent" | "late"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -341,6 +383,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "teacher"],
+      attendance_status: ["present", "absent", "late"],
     },
   },
 } as const

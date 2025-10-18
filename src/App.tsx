@@ -12,6 +12,8 @@ import Assignments from "./pages/Assignments";
 import Grades from "./pages/Grades";
 import Profile from "./pages/Profile";
 import CourseDetail from "./pages/CourseDetail";
+import AIChat from "./pages/AIChat";
+import Attendance from "./pages/Attendance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/courses" element={<Courses />} />
             <Route path="/assignments" element={<Assignments />} />
             <Route path="/grades" element={<Grades />} />
+            <Route path="/ai-chat" element={<AIChat />} />
+            <Route path="/attendance" element={<Attendance />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/course/:courseId" element={<CourseDetail />} />
           </Route>
