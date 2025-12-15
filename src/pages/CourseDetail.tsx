@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Users, FileText, Trash2, Edit } from "lucide-react";
+import { ArrowLeft, Users, FileText, Trash2, Edit, FolderOpen } from "lucide-react";
 import CreateAssignmentDialog from "@/components/assignments/CreateAssignmentDialog";
+import CourseFiles from "@/components/courses/CourseFiles";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
@@ -31,6 +32,15 @@ const CourseDetail = () => {
   const [loading, setLoading] = useState(true);
   const [createAssignmentOpen, setCreateAssignmentOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) setUserId(user.id);
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     fetchCourseData();
@@ -193,6 +203,10 @@ const CourseDetail = () => {
               <FileText className="h-4 w-4 mr-2" />
               Assignments ({assignments.length})
             </TabsTrigger>
+            <TabsTrigger value="files">
+              <FolderOpen className="h-4 w-4 mr-2" />
+              Files
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="students">
@@ -286,6 +300,16 @@ const CourseDetail = () => {
                   </Card>
                 ))}
               </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="files">
+            {userId && courseId && (
+              <CourseFiles
+                courseId={courseId}
+                userRole="teacher"
+                userId={userId}
+              />
             )}
           </TabsContent>
         </Tabs>
