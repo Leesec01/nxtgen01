@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Clock, User, CheckCircle2 } from "lucide-react";
+import { BookOpen, Clock, User, CheckCircle2, Eye } from "lucide-react";
 
 interface CourseCardProps {
   course: any;
@@ -11,6 +12,8 @@ interface CourseCardProps {
 }
 
 const CourseCard = ({ course, isEnrolled, onEnroll, onUnenroll }: CourseCardProps) => {
+  const navigate = useNavigate();
+
   return (
     <Card className="card-gradient hover:shadow-lg transition-all hover:scale-[1.02]">
       <CardHeader>
@@ -41,17 +44,27 @@ const CourseCard = ({ course, isEnrolled, onEnroll, onUnenroll }: CourseCardProp
           </div>
         )}
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex gap-2">
         {isEnrolled ? (
-          onUnenroll && (
+          <>
             <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => onUnenroll(course.id)}
+              variant="default"
+              className="flex-1"
+              onClick={() => navigate(`/student-course/${course.id}`)}
             >
-              Unenroll
+              <Eye className="h-4 w-4 mr-2" />
+              View Course
             </Button>
-          )
+            {onUnenroll && (
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => onUnenroll(course.id)}
+              >
+                ✕
+              </Button>
+            )}
+          </>
         ) : (
           onEnroll && (
             <Button

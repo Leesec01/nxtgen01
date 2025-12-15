@@ -12,6 +12,7 @@ import Assignments from "./pages/Assignments";
 import Grades from "./pages/Grades";
 import Profile from "./pages/Profile";
 import CourseDetail from "./pages/CourseDetail";
+import StudentCourseView from "./pages/StudentCourseView";
 import AIChat from "./pages/AIChat";
 import Attendance from "./pages/Attendance";
 import NotFound from "./pages/NotFound";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/attendance" element={<Attendance />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/course/:courseId" element={<CourseDetail />} />
+            <Route path="/student-course/:courseId" element={<StudentCourseView />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
