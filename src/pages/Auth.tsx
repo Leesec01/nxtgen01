@@ -67,7 +67,15 @@ const Auth = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        // Handle specific error cases
+        if (error.message.includes("User already registered") || 
+            error.message.includes("already been registered") ||
+            error.message.toLowerCase().includes("already exists")) {
+          throw new Error("An account with this email already exists. Please sign in instead.");
+        }
+        throw error;
+      }
 
       setEmailSent(true);
       toast({
@@ -76,7 +84,7 @@ const Auth = () => {
       });
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: "Registration Failed",
         description: error.message,
         variant: "destructive",
       });
