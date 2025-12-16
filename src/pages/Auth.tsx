@@ -29,21 +29,51 @@ const Auth = () => {
       setEmailConfirmed(true);
     }
 
-    // Set up auth state listener
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN" && session) {
-          navigate("/dashboard");
+          // Defer navigation to avoid auth state deadlock
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 0);
+        }
+        if (event === "SIGNED_OUT") {
+          // Clear any stale state
+          setEmail("");
+          setPassword("");
         }
       }
     );
 
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/dashboard");
+    // THEN check for existing session and validate it
+    const checkSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        // Clear stale session on error
+        await supabase.auth.signOut();
+        return;
       }
-    });
+      
+      if (session) {
+        // Verify the user still has a profile
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", session.user.id)
+          .maybeSingle();
+        
+        if (profile) {
+          navigate("/dashboard");
+        } else {
+          // Profile doesn't exist, sign out
+          await supabase.auth.signOut();
+        }
+      }
+    };
+    
+    checkSession();
 
     return () => subscription.unsubscribe();
   }, [navigate, searchParams]);

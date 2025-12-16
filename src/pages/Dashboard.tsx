@@ -17,9 +17,11 @@ const Dashboard = () => {
   useEffect(() => {
     const getProfile = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
-        if (!session) {
+        if (sessionError || !session) {
+          // Clear any stale session data
+          await supabase.auth.signOut();
           navigate("/auth");
           return;
         }
@@ -30,17 +32,27 @@ const Dashboard = () => {
           .from("profiles")
           .select("role")
           .eq("id", session.user.id)
-          .single();
+          .maybeSingle();
 
-        if (error) throw error;
+        if (error) {
+          console.error("Profile fetch error:", error);
+          await supabase.auth.signOut();
+          navigate("/auth");
+          return;
+        }
+
+        if (!profile) {
+          // Profile doesn't exist - user account may have been deleted
+          await supabase.auth.signOut();
+          navigate("/auth");
+          return;
+        }
 
         setUserRole(profile.role);
       } catch (error: any) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
+        console.error("Dashboard error:", error);
+        await supabase.auth.signOut();
+        navigate("/auth");
       } finally {
         setLoading(false);
       }
