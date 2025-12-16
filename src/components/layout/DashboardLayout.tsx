@@ -16,9 +16,10 @@ export function DashboardLayout() {
   useEffect(() => {
     const getProfile = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
-        if (!session) {
+        if (sessionError || !session) {
+          await supabase.auth.signOut();
           navigate("/auth");
           return;
         }
@@ -29,17 +30,26 @@ export function DashboardLayout() {
           .from("profiles")
           .select("role")
           .eq("id", session.user.id)
-          .single();
+          .maybeSingle();
 
-        if (error) throw error;
+        if (error) {
+          console.error("Profile fetch error:", error);
+          await supabase.auth.signOut();
+          navigate("/auth");
+          return;
+        }
+
+        if (!profile) {
+          await supabase.auth.signOut();
+          navigate("/auth");
+          return;
+        }
 
         setUserRole(profile.role);
       } catch (error: any) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        });
+        console.error("Layout error:", error);
+        await supabase.auth.signOut();
+        navigate("/auth");
       } finally {
         setLoading(false);
       }
